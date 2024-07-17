@@ -4,6 +4,11 @@ import plotly.graph_objects as go
 import os
 import tempfile
 
+
+st.set_page_config(
+    page_title="Generátor heatmapy",
+)
+
 def process_file(file, sheet_name, interval_column, consumption_column, title):
     try:
         # Load the data from the selected sheet
