@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
+import plotly.express as px
 import os
 import tempfile
-
 
 st.set_page_config(
     page_title="Generátor heatmapy",
@@ -58,10 +58,10 @@ def process_file(file, sheet_name, interval_column, consumption_column, title):
         with open(tmp_file_path, 'r', encoding='utf-8') as file:
             html_content = file.read()
 
-        return html_content, tmp_file_path, fig
+        return df, html_content, tmp_file_path, fig
     except Exception as e:
         st.error(f"Error: {str(e)}")
-        return None, None, None
+        return None, None, None, None
 
 # Streamlit app UI
 st.title("Generátor heatmapy z PRE excelu")
@@ -86,12 +86,27 @@ if uploaded_file:
         title = st.text_input("Název Heatmapy:", "Heatmapa spotřeby elektřiny")
 
         if st.button("Generovat Heatmapu"):
-            html_content, tmp_file_path, fig = process_file(uploaded_file, sheet_name, interval_column, consumption_column, title)
+            df, html_content, tmp_file_path, fig = process_file(uploaded_file, sheet_name, interval_column, consumption_column, title)
             if html_content:
                 st.success("Heatmapa byla úspěšně vygenerována!")
                 st.plotly_chart(fig)
                 st.download_button(label="Stáhnout Heatmapu", data=html_content, file_name=output_file_name, mime='text/html')
 
+        # Additional Analysis
+        st.subheader("Další analýzy")
+        
+        # Summary statistics
+        if st.checkbox("Zobrazit souhrnné statistiky"):
+            st.write(df.describe())
 
+        # Line chart of consumption over time
+        if st.checkbox("Zobrazit čárový graf spotřeby v čase"):
+            line_chart = px.line(df, x='Počátek intervalu', y='Consumption', title='Spotřeba v čase')
+            st.plotly_chart(line_chart)
 
-st.write("Vytvořil Kristián Zeman")
+        # Bar chart of consumption by date
+        if st.checkbox("Zobrazit sloupcový graf spotřeby podle data"):
+            bar_chart = px.bar(df, x='Date', y='Consumption', title='Denní spotřeba')
+            st.plotly_chart(bar_chart)
+
+st.write("Vytvořil Kristián Zeman :sunglasses:")
