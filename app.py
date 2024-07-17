@@ -1,10 +1,10 @@
-import tkinter as tk
-from tkinter import filedialog, messagebox, ttk, simpledialog
+#import tkinter as tk
+#from tkinter import filedialog, messagebox, ttk, simpledialog
 import pandas as pd
 import plotly.graph_objects as go
-import os
-import webbrowser
-from threading import Thread
+#import os
+#import webbrowser
+#from threading import Thread
 import streamlit as st
 
 def process_file(file, sheet_name, interval_column, consumption_column, title):
