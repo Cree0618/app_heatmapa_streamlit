@@ -91,3 +91,7 @@ if uploaded_file:
                 st.success("Heatmapa byla úspěšně vygenerována!")
                 st.plotly_chart(fig)
                 st.download_button(label="Stáhnout Heatmapu", data=html_content, file_name=output_file_name, mime='text/html')
+
+
+
+st.write("Vytvořil Kristián Zeman")
