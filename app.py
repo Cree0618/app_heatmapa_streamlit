@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
-#import os
+import os
 import tempfile
 
 def process_file(file, sheet_name, interval_column, consumption_column, title):
@@ -53,10 +53,10 @@ def process_file(file, sheet_name, interval_column, consumption_column, title):
         with open(tmp_file_path, 'r', encoding='utf-8') as file:
             html_content = file.read()
 
-        return html_content, tmp_file_path
+        return html_content, tmp_file_path, fig
     except Exception as e:
         st.error(f"Error: {str(e)}")
-        return None, None
+        return None, None, None
 
 # Streamlit app UI
 st.title("Generátor heatmapy z PRE excelu")
@@ -81,13 +81,8 @@ if uploaded_file:
         title = st.text_input("Název Heatmapy:", "Heatmapa spotřeby elektřiny")
 
         if st.button("Generovat Heatmapu"):
-            html_content, tmp_file_path = process_file(uploaded_file, sheet_name, interval_column, consumption_column, title)
+            html_content, tmp_file_path, fig = process_file(uploaded_file, sheet_name, interval_column, consumption_column, title)
             if html_content:
                 st.success("Heatmapa byla úspěšně vygenerována!")
-                st.plotly_chart(go.Figure(go.Heatmap(
-                    z=pivot_table_cleaned.values,
-                    x=pivot_table_cleaned.columns,
-                    y=pivot_table_cleaned.index,
-                    colorscale='Viridis'
-                )))
+                st.plotly_chart(fig)
                 st.download_button(label="Stáhnout Heatmapu", data=html_content, file_name=output_file_name, mime='text/html')
