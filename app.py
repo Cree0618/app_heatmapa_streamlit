@@ -96,4 +96,4 @@ if uploaded_file:
 # write the author to the bottom of the page
 
 
-st.write("Vytvořil Kristián Zeman :sunglasses:")
+st.write("Vytvořil Kristián Z.")
