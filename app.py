@@ -93,7 +93,7 @@ if uploaded_file:
                 st.download_button(label="Stáhnout Heatmapu", data=html_content, file_name=output_file_name, mime='text/html')
 
 
-# write the author to the bottom of the page
+
 
 
 st.write("Vytvořil Kristián Z.")
